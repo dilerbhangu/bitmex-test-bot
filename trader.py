@@ -13,10 +13,11 @@ class Trader():
         try:
             if predict == -1:
                 response = self.client.Order.Order_new(symbol="XBTUSD",side="Sell",price=ohlcv_candles['close'][-1]+2,orderQty=self.money_to_trade * self.leverage).result()
+                return response
             if predict == 1:
                 response = self.client.Order.Order_new(symbol="XBTUSD",side="Buy",price=ohlcv_candles['close']-2,orderQty=self.money_to_trade * self.leverage).result()
-
+                return response
         except Exception as e:
             print('something goes wrong')
 
-        return response
+        return

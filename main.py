@@ -17,4 +17,5 @@ trader = Trader(client, strategy, money_to_trade=AMOUNT_MONEY_TO_TRADE, leverage
 #         trader.execute_trade()
 #     time.sleep(1)
 response=trader.execute_trade()
-print(response)
+if response == None:
+    print(response)
