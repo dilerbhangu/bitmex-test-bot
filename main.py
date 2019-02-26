@@ -10,13 +10,16 @@ client = bitmex.bitmex(test=False, api_key=ID, api_secret=SECRET)
 strategy = Strategy(client, timeframe=TIMEFRAME)
 trader = Trader(client, strategy, money_to_trade=AMOUNT_MONEY_TO_TRADE, leverage=LEVERAGE, ohlcv_candles)
 
-# while True:
-   if response is None:
-        if round(time.time()) % time_to_wait_new_trade[TIMEFRAME] == 0:
-            trader.execute_trade()
-    elif response[0]['side'] = 'Sell':
-        trader.buy_trade()
-    elif response[0]['side'] = 'Buy':
-        trader.sell_trade()
-    else:
-        print('something goes wrong during response')
+while True:
+    if round(time.time()) % time_to_wait_new_trade[TIMEFRAME] == 0:
+        trader.execute_trade()
+        if response is not None:
+            exec_price = response[0][price]
+            stop_order_response=trader.set_stop_limit(exec_price)
+            take_profit_order_response=trader.set_take_profit(exec_price)
+            while True:
+                if stop_order_response[0]['ordStatus']='Filled' or take_profit_order_response[0]['ordStatus']='Filled':
+                    response = None
+                    break
+                time.sleep(1)
+    time.sleep(1)

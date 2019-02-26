@@ -14,18 +14,34 @@ class Trader():
         try:
             if predict == -1:
                 response = self.client.Order.Order_new(
-                    symbol="XBTUSD", side="Sell", price=ohlcv_candles['close'][-1]+2, orderQty=self.money_to_trade * self.leverage).result()
+                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage).result()
                 return response
             if predict == 1:
                 response = self.client.Order.Order_new(
-                    symbol="XBTUSD", side="Buy", price=ohlcv_candles['close']-2, orderQty=self.money_to_trade * self.leverage).result()
+                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage).result()
                 return response
         except Exception as e:
             print('something goes wrong')
 
         return
 
-    def sell_trade(self):
-        self.client.Order_new(
-            symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=ohlcv_candles['low'][-1], price=ohlcv_candles['low'][-1]-2
-        ).result()
+    def set_stop_limit(self):
+            if response[0]['side']=='Buy':
+                 stop_order_response=self.client.Order.Order_new(
+                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage,stopPx=exec_price-7,price=exec_price-10).result()
+            elif response[0]['side']=='Sell':
+                 stop_order_response=self.client.Order.Order_new(
+                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage,stopPx=exec_price+7,price=exec_price+10).result()
+
+            return stop_order_response
+
+
+    def set_take_profit(self):
+            if response[0]['side']=='Buy':
+                 take_profit_order_response=self.client.Order.Order_new(
+                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage,stopPx=exec_price+15,price=exec_price+20,ordType='LimitIfTouched').result()
+            elif response[0]['side']=='Sell':
+                 take_profit_order_response=self.client.Order.Order_new(
+                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage,stopPx=exec_price-15,price=exec_price-20,ordType='LimitIfTouched').result()
+
+            return take_profit_order_response
