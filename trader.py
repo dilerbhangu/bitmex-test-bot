@@ -1,6 +1,6 @@
 
 class Trader():
-    def __init__(self, client, strategy, money_to_trade=100, leverage=5, ohlcv_candles):
+    def __init__(self, client, strategy,ohlcv_candles, money_to_trade=100, leverage=5):
         self.client = client
         self.strategy = strategy
         self.money_to_trade = money_to_trade
@@ -8,7 +8,7 @@ class Trader():
         self.ohlcv_candles = ohlcv_candles
 
     def execute_trade(self):
-        predict, ohlcv_candles = self.strategy.predict()
+        predict, self.ohlcv_candles = self.strategy.predict()
         print('Predication: {}'.format(predict))
 
         try:

@@ -5,7 +5,7 @@ class Strategy():
     def __init__(self,client ,timeframe='5m'):
         self.client = client
         self.timeframe = timeframe
-
+        
 
     def predict(self):
         df = self.client.Trade.Trade_getBucketed(binSize=self.timeframe,reverse=True,symbol='XBTUSD',count=10).result()[0]
