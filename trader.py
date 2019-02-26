@@ -16,14 +16,18 @@ class Trader():
                 response = self.client.Order.Order_new(
                     symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage).result()
                 return response
-            if predict == 1:
+            elif predict == 1:
                 response = self.client.Order.Order_new(
                     symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage).result()
                 return response
+            else:
+                response=None
+                return response
+
         except Exception as e:
             print('something goes wrong')
 
-        return
+        return 
 
     def set_stop_limit(self):
             if response[0]['side']=='Buy':
