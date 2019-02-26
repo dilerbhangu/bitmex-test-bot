@@ -9,6 +9,7 @@ response = None
 stop_order_response=[]
 take_profit_order_response=[]
 ohlcv_candles=[]
+order_counter = 0
 
 client = bitmex.bitmex(test=False, api_key=ID, api_secret=SECRET)
 strategy = Strategy(client, timeframe=TIMEFRAME)
@@ -21,9 +22,13 @@ while True:
             exec_price = response[0][price]
             stop_order_response=trader.set_stop_limit(exec_price)
             take_profit_order_response=trader.set_take_profit(exec_price)
+            order_counter += order_counter
+            print('Order Number : {}'.format(order_counter))
             while True:
                 if stop_order_response[0]['ordStatus']=='Filled' or take_profit_order_response[0]['ordStatus']=='Filled':
                     response = None
+                    client.order_cancel_all()
+                    print('order filled and cancel all other orders')
                     break
                 time.sleep(1)
     time.sleep(1)
