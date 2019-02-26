@@ -17,7 +17,7 @@ trader = Trader(client, strategy,ohlcv_candles, money_to_trade=AMOUNT_MONEY_TO_T
 
 while True:
     if round(time.time()) % time_to_wait_new_trade[TIMEFRAME] == 0:
-        trader.execute_trade()
+        response=trader.execute_trade()
         if response is not None:
             exec_price = response[0][price]
             stop_order_response=trader.set_stop_limit(exec_price)
