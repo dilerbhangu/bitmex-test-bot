@@ -5,10 +5,10 @@ class Strategy():
     def __init__(self,client ,timeframe='5m'):
         self.client = client
         self.timeframe = timeframe
-        
+
 
     def predict(self):
-        df = self.client.Trade.Trade_getBucketed(binSize=self.timeframe,reverse=True,symbol='XBTUSD',count=10).result()[0]
+        df = self.client.Trade.Trade_getBucketed(binSize=self.timeframe,reverse=True,symbol='XBTUSD',count=10,partial=True).result()[0]
         ohlcv_candles = pd.DataFrame(df)
         ohlcv_candles.set_index(['timestamp'],inplace=True)
         ohlcv_candles.sort_values(by=['timestamp'],ascending=True,inplace=True)
@@ -18,12 +18,12 @@ class Strategy():
 
         #sell
         # print(hist)
-        print('voulume -2 {}'.format(ohlcv_candles['volume'][-2]))
-        print('volume -1 {}'.format(ohlcv_candles['volume'][-1]))
+        print('voulume -2 {}'.format(ohlcv_candles['volume'][-3]))
+        print('volume -1 {}'.format(ohlcv_candles['volume'][-2]))
 
-        cond1 = ohlcv_candles['volume'][-1]> 4*ohlcv_candles['volume'][-2]
-        cond2 = ohlcv_candles['close'][-2]>ohlcv_candles['close'][-1]
-        cond3 = ohlcv_candles['close'][-2]<ohlcv_candles['close'][-1]
+        cond1 = ohlcv_candles['volume'][-2]> 4*ohlcv_candles['volume'][-3]
+        cond2 = ohlcv_candles['close'][-3]>ohlcv_candles['close'][-2]
+        cond3 = ohlcv_candles['close'][-3]<ohlcv_candles['close'][-3]
         if cond1 and cond3:
             return -1,ohlcv_candles
         elif cond1 and cond2:
