@@ -29,7 +29,7 @@ class Trader():
 
         return
 
-    def set_stop_limit(self, exec_price):
+    def set_stop_limit(self, exec_price, response):
         if response[0]['side'] == 'Buy':
             stop_order_response = self.client.Order.Order_new(
                 symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price-7, price=exec_price-10).result()
@@ -39,7 +39,7 @@ class Trader():
 
         return stop_order_response
 
-    def set_take_profit(self, exec_price):
+    def set_take_profit(self, exec_price, response):
         if response[0]['side'] == 'Buy':
             take_profit_order_response = self.client.Order.Order_new(
                 symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price+15, price=exec_price+20, ordType='LimitIfTouched').result()
