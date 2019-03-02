@@ -1,6 +1,7 @@
+
 import bitmex
 import time
-from keys import ID, SECRET,SLACK_TOKEN
+from keys import ID, SECRET, SLACK_TOKEN
 from strategy import Strategy
 from trader import Trader
 from config import TIMEFRAME, AMOUNT_MONEY_TO_TRADE, LEVERAGE, ohlcv_candles, time_to_wait_new_trade
@@ -17,7 +18,7 @@ sc = SlackClient(SLACK_TOKEN)
 
 client = bitmex.bitmex(test=False, api_key=ID, api_secret=SECRET)
 strategy = Strategy(client, timeframe=TIMEFRAME)
-trader = Trader(client,sc, strategy, ohlcv_candles,
+trader = Trader(client, sc, strategy, ohlcv_candles,
                 money_to_trade=AMOUNT_MONEY_TO_TRADE, leverage=LEVERAGE)
 
 while True:
@@ -35,6 +36,7 @@ while True:
             order_counter += order_counter
             print('Order Number : {}'.format(order_counter))
             while True:
+                print(stop_order_response[0]['ordStatus'])
                 if stop_order_response[0]['ordStatus'] == 'Filled' or take_profit_order_response[0]['ordStatus'] == 'Filled':
                     response = None
                     if trader.send_notifcation(response) is True:

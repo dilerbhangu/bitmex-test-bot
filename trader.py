@@ -1,6 +1,6 @@
 
 class Trader():
-    def __init__(self, client,sc, strategy, ohlcv_candles, money_to_trade=100, leverage=5):
+    def __init__(self, client, sc, strategy, ohlcv_candles, money_to_trade=100, leverage=5):
         self.client = client
         self.sc = sc
         self.strategy = strategy
@@ -50,27 +50,32 @@ class Trader():
 
         return take_profit_order_response
 
-    def send_notifcation(self,sc,response):
+    def send_notifcation(self, response):
         msg = ''
-        if response = 1:
+        print('In send note')
+        if response[0]['side'] == 'Buy':
             msg = 'Buy Signal From Bitmex'
-            return slack_msg(sc,msg)
-        elif response = -1:
+            self.slack_msg(msg)
+            return True
+        elif response[0]['side'] == 'Sell':
             msg = 'Sell Signal From Bitmex'
-            return slack_msg(sc,msg)
-        elif response = None:
+            self.slack_msg(msg)
+            return True
+        elif response is None:
             msg = 'Order Filled Signal From Bitmex'
-            return slack_msg(sc,msg)
+            return self.slack_msg(msg)
 
-
-    def slack_msg(self,sc,msg):
+    def slack_msg(self, msg):
+        print('in slack note')
         try:
-            sc.api_call(
-              "chat.postMessage",
-              channel="bitmexbot",
-              text=msg+":smile:",
-               icon_emoji=':robot_face:')
-               return True
+            print('in try')
+            self.sc.api_call(
+                "chat.postMessage",
+                channel="bitmexbot",
+                text=msg+":smile:",
+                username='My Robot',
+                icon_emoji=':robot_face:')
+            # return True
         except:
             print('Exception in Slack API')
-            return False
+            # return False
