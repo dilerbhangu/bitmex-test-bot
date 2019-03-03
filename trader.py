@@ -33,20 +33,20 @@ class Trader():
     def set_stop_limit(self, exec_price, response):
         if response[0]['side'] == 'Buy':
             stop_order_response = self.client.Order.Order_new(
-                symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price-7, price=exec_price-10).result()
+                symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price-10, price=exec_price-9.5, execInst="LastPrice").result()
         elif response[0]['side'] == 'Sell':
             stop_order_response = self.client.Order.Order_new(
-                symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price+7, price=exec_price+10).result()
+                symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price+10, price=exec_price+9.5, execInst="LastPrice").result()
 
         return stop_order_response
 
     def set_take_profit(self, exec_price, response):
         if response[0]['side'] == 'Buy':
             take_profit_order_response = self.client.Order.Order_new(
-                symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price+15, price=exec_price+20, ordType='LimitIfTouched').result()
+                symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price+15, price=exec_price+20, ordType='LimitIfTouched', execInst="LastPrice").result()
         elif response[0]['side'] == 'Sell':
             take_profit_order_response = self.client.Order.Order_new(
-                symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price-15, price=exec_price-20, ordType='LimitIfTouched').result()
+                symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, stopPx=exec_price-15, price=exec_price-20, ordType='LimitIfTouched', execInst="LastPrice").result()
 
         return take_profit_order_response
 
