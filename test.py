@@ -4,16 +4,8 @@ from keys import ID, SECRET
 import time
 import pandas as pd
 client = bitmex.bitmex(test=False, api_key=ID, api_secret=SECRET)
-while True:
-    # result = client.Order.Order_getOrders(symbol='XBTUSD', count=3, reverse=True).result()
-    result = client.Trade.Trade_getBucketed(
-        binSize='1m', reverse=True, symbol='XBTUSD', count=10, partial=True).result()
-    result = client.Trade.Trade_getBucketed(
-        binSize='1m', reverse=True, symbol='ETHXBT', count=10, partial=True).result()
-    x = result[1].headers
-    print(x['X-RateLimit-Limit'])
-    print(x['X-RateLimit-Remaining'])
-    time.sleep(5)
+x = client.Order.Order_cancelAll()
+print(x)
 
 
 # print(order_status[1]['orderID'])

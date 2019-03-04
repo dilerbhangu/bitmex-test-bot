@@ -11,15 +11,15 @@ class Trader():
     def execute_trade(self):
         predict, self.ohlcv_candles = self.strategy.predict()
         print('Predication: {}'.format(predict))
-
+        limit_price = self.ohlcv_candles['close'][-2]
         try:
             if predict == -1:
                 response = self.client.Order.Order_new(
-                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage).result()
+                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, price=limit_price+1).result()
                 return response
             elif predict == 1:
                 response = self.client.Order.Order_new(
-                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage).result()
+                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, price=limit_price-1).result()
                 return response
             else:
                 response = None
@@ -55,7 +55,8 @@ class Trader():
         print('In send note')
         if response is None:
             msg = 'Order Filled Signal From Bitmex'
-            return self.slack_msg(msg)
+            self.slack_msg(msg)
+            return True
         elif response[0]['side'] == 'Buy':
             msg = 'Buy Signal From Bitmex'
             self.slack_msg(msg)

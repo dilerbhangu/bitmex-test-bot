@@ -13,6 +13,7 @@ take_profit_order_response = []
 ohlcv_candles = []
 order_counter = 0
 msg = ''
+flag = False
 
 sc = SlackClient(SLACK_TOKEN)
 
@@ -32,20 +33,24 @@ while True:
                 print('Notification Failed')
             exec_price = response[0]['price']
             stop_order_response = trader.set_stop_limit(exec_price, response)
-            take_profit_order_response = trader.set_take_profit(exec_price, response)
             order_counter += order_counter
             print('Order Number : {}'.format(order_counter))
             while True:
                 order_status = client.Order.Order_getOrders(
                     symbol='XBTUSD', count=3, reverse=True).result()
-                if order_status[0][1]['ordStatus'] == 'Filled' or order_status[0][0]['ordStatus'] == 'Filled':
-                    response = None
-                    if trader.send_notifcation(response) is True:
-                        print('Notification send successfully')
-                    else:
-                        print('Notification Failed')
-                    client.order_cancel_all()
-                    print('order filled and cancel all other orders')
-                    break
+                if order_status[0][1]['ordStatus'] == 'Filled' and flag == False:
+                    take_profit_order_response = trader.set_take_profit(exec_price, response)
+                    flag = True
+
+                if flag = True:
+                    if order_status[0][1]['ordStatus'] == 'Filled' or order_status[0][0]['ordStatus'] == 'Filled':
+                        response = None
+                        if trader.send_notifcation(response) is True:
+                            print('Notification send successfully')
+                        else:
+                            print('Notification Failed')
+                        client.Order.Order_cancelAll()
+                        print('order filled and cancel all other orders')
+                        break
                 time.sleep(2)
     time.sleep(1)
