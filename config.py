@@ -1,7 +1,7 @@
-AMOUNT_MONEY_TO_TRADE = 1  # $
-LEVERAGE = 10
+AMOUNT_MONEY_TO_TRADE = 1000  # $
+LEVERAGE = 4
 ohlcv_candles = []
-TIMEFRAME = '1m'
+TIMEFRAME = '5m'
 
 time_to_wait_new_trade = {'1m': 60,
                           '5m': 60*5,

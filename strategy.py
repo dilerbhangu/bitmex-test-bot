@@ -22,7 +22,7 @@ class Strategy():
         print('voulume previous {}'.format(ohlcv_candles['volume'][-3]))
         print('volume current {}'.format(ohlcv_candles['volume'][-2]))
 
-        cond1 = ohlcv_candles['volume'][-2] > ohlcv_candles['volume'][-3]
+        cond1 = ohlcv_candles['volume'][-2] > 4*ohlcv_candles['volume'][-3]
         cond2 = ohlcv_candles['close'][-3] > ohlcv_candles['close'][-2]
         cond3 = ohlcv_candles['close'][-3] < ohlcv_candles['close'][-2]
         cond_hammer = (ohlcv_candles['close'][-2]-ohlcv_candles['low'][-2]
