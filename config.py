@@ -1,4 +1,4 @@
-AMOUNT_MONEY_TO_TRADE = 10  # $
+AMOUNT_MONEY_TO_TRADE = 1  # $
 LEVERAGE = 10
 ohlcv_candles = []
 TIMEFRAME = '1m'

@@ -4,7 +4,7 @@ from keys import ID, SECRET
 import time
 import pandas as pd
 client = bitmex.bitmex(test=False, api_key=ID, api_secret=SECRET)
-x = client.Order.Order_cancelAll()
+x = client.Order.Order_cancelAll().result()
 print(x)
 
 
