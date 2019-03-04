@@ -53,7 +53,10 @@ class Trader():
     def send_notifcation(self, response):
         msg = ''
         print('In send note')
-        if response[0]['side'] == 'Buy':
+        if response is None:
+            msg = 'Order Filled Signal From Bitmex'
+            return self.slack_msg(msg)
+        elif response[0]['side'] == 'Buy':
             msg = 'Buy Signal From Bitmex'
             self.slack_msg(msg)
             return True
@@ -61,9 +64,6 @@ class Trader():
             msg = 'Sell Signal From Bitmex'
             self.slack_msg(msg)
             return True
-        elif response is None:
-            msg = 'Order Filled Signal From Bitmex'
-            return self.slack_msg(msg)
 
     def slack_msg(self, msg):
         print('in slack note')

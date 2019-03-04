@@ -13,7 +13,7 @@ while True:
     x = result[1].headers
     print(x['X-RateLimit-Limit'])
     print(x['X-RateLimit-Remaining'])
-    time.sleep(1)
+    time.sleep(5)
 
 
 # print(order_status[1]['orderID'])

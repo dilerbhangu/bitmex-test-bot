@@ -3,7 +3,7 @@ import pandas as pd
 
 
 class Strategy():
-    def __init__(self, client, timeframe='1m'):
+    def __init__(self, client, timeframe='5m'):
         self.client = client
         self.timeframe = timeframe
 
