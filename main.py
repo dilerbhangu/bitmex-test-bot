@@ -6,7 +6,6 @@ from strategy import Strategy
 from trader import Trader
 from config import TIMEFRAME, AMOUNT_MONEY_TO_TRADE, LEVERAGE, ohlcv_candles, time_to_wait_new_trade
 from slackclient import SlackClient
-import sys
 
 response = None
 stop_order_response = []
@@ -48,7 +47,6 @@ while True:
                     flag = True
 
                 if flag == True:
-                    print('order status 0 {}'.format(order_status[0][0]['price']))
                     if order_status[0][0]['ordStatus'] == 'Filled' or order_status[0][1]['ordStatus'] == 'Filled':
                         response = None
                         if trader.send_notifcation(response) is True:
@@ -58,7 +56,6 @@ while True:
                         client.Order.Order_cancelAll().result()
                         print('order filled and cancel all other orders')
                         flag = False
-                        sys.exit('finish!')
                         break
                 time.sleep(2)
     time.sleep(1)
