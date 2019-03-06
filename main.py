@@ -32,18 +32,18 @@ while True:
             else:
                 print('Notification Failed')
             exec_price = response[0]['price']
-            order_counter += order_counter
+            order_counter = order_counter + 1.
             print('Order Number : {}'.format(order_counter))
+            time.sleep(2)
             while True:
                 order_status = client.Order.Order_getOrders(
-                    symbol='XBTUSD', count=3, reverse=True).result()
+                    symbol='XBTUSD', count=2, reverse=True).result()
                 if order_status[0][0]['ordStatus'] == 'Filled' and flag == False:
                     stop_order_response = trader.set_stop_limit(exec_price, response)
                     take_profit_order_response = trader.set_take_profit(exec_price, response)
-                    time.sleep(1)
+                    time.sleep(2)
                     order_status = client.Order.Order_getOrders(
                         symbol='XBTUSD', count=2, reverse=True).result()
-                    print(order_status)
                     flag = True
 
                 if flag == True:
