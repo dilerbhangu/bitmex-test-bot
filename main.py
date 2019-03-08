@@ -39,6 +39,9 @@ while True:
                 order_status = client.Order.Order_getOrders(
                     symbol='XBTUSD', count=2, reverse=True).result()
                 if order_status[0][0]['ordStatus'] == 'Filled' and flag == False:
+                    response = 'Active Order'
+                    msg = 'Active Order Filled at Price: '+order_status[0][0]['ordStatus']
+                    trader.send_notifcation(response,extra=msg)
                     stop_order_response = trader.set_stop_limit(exec_price, response)
                     take_profit_order_response = trader.set_take_profit(exec_price, response)
                     time.sleep(2)
@@ -49,7 +52,11 @@ while True:
                 if flag == True:
                     if order_status[0][0]['ordStatus'] == 'Filled' or order_status[0][1]['ordStatus'] == 'Filled':
                         response = None
-                        if trader.send_notifcation(response) is True:
+                        if order_status[0][0]['ordStatus'] == 'Filled':
+                            msg = 'Order Filled With Profit and excute price: '+order_status[0][0]['price']
+                        else:
+                            msg = 'Order Filled With Loss and excute price: '+order_status[0][1]['price']
+                        if trader.send_notifcation(response,extra=msg) is True:
                             print('Notification send successfully')
                         else:
                             print('Notification Failed')

@@ -50,11 +50,10 @@ class Trader():
 
         return take_profit_order_response
 
-    def send_notifcation(self, response):
+    def send_notifcation(self, response,**kwargs):
         msg = ''
-        print('In send note')
         if response is None:
-            msg = 'Order Filled Signal From Bitmex'
+            msg=kwargs.get('extra', None)
             self.slack_msg(msg)
             return True
         elif response[0]['side'] == 'Buy':
@@ -65,11 +64,13 @@ class Trader():
             msg = 'Sell Signal From Bitmex'
             self.slack_msg(msg)
             return True
+        elif response == 'Active Order':
+            msg=kwargs.get('extra', None) 
+            self.slack_msg(msg)
+            return True
 
     def slack_msg(self, msg):
-        print('in slack note')
         try:
-            print('in try')
             self.sc.api_call(
                 "chat.postMessage",
                 channel="bitmexbot",
