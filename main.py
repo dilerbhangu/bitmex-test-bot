@@ -41,23 +41,25 @@ while True:
                 if order_status[0][0]['ordStatus'] == 'Filled' and flag == False:
                     stop_order_response = trader.set_stop_limit(exec_price, response)
                     take_profit_order_response = trader.set_take_profit(exec_price, response)
-                    time.sleep(2)
                     order_status = client.Order.Order_getOrders(
-                        symbol='XBTUSD', count=2, reverse=True).result()
+                        symbol='XBTUSD', count=3, reverse=True).result()
                     flag = True
+                    time.sleep(2)
 
-                    msg = 'Active Order Filled at Price: '+order_status[0][2]['price']
+                    msg = 'Active Order Filled at Price: '+str(order_status[0][2]['price'])
                     response = 'Active Order'
-                    trader.send_notifcation(response,extra=msg)
+                    trader.send_notifcation(response, extra=msg)
 
                 if flag == True:
                     if order_status[0][0]['ordStatus'] == 'Filled' or order_status[0][1]['ordStatus'] == 'Filled':
                         response = None
                         if order_status[0][0]['ordStatus'] == 'Filled':
-                            msg = 'Order Filled With Profit and excute price: '+order_status[0][0]['price']
+                            msg = 'Order Filled With Profit and excute price: ' + \
+                                str(order_status[0][0]['price'])
                         else:
-                            msg = 'Order Filled With Loss and excute price: '+order_status[0][1]['price']
-                        if trader.send_notifcation(response,extra=msg) is True:
+                            msg = 'Order Filled With Loss and excute price: ' + \
+                                str(order_status[0][1]['price'])
+                        if trader.send_notifcation(response, extra=msg) is True:
                             print('Notification send successfully')
                         else:
                             print('Notification Failed')
