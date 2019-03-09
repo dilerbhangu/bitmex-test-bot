@@ -39,15 +39,16 @@ while True:
                 order_status = client.Order.Order_getOrders(
                     symbol='XBTUSD', count=2, reverse=True).result()
                 if order_status[0][0]['ordStatus'] == 'Filled' and flag == False:
-                    response = 'Active Order'
-                    msg = 'Active Order Filled at Price: '+order_status[0][0]['ordStatus']
-                    trader.send_notifcation(response,extra=msg)
                     stop_order_response = trader.set_stop_limit(exec_price, response)
                     take_profit_order_response = trader.set_take_profit(exec_price, response)
                     time.sleep(2)
                     order_status = client.Order.Order_getOrders(
                         symbol='XBTUSD', count=2, reverse=True).result()
                     flag = True
+
+                    msg = 'Active Order Filled at Price: '+order_status[0][2]['price']
+                    response = 'Active Order'
+                    trader.send_notifcation(response,extra=msg)
 
                 if flag == True:
                     if order_status[0][0]['ordStatus'] == 'Filled' or order_status[0][1]['ordStatus'] == 'Filled':

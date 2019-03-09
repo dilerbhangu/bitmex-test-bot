@@ -56,6 +56,10 @@ class Trader():
             msg=kwargs.get('extra', None)
             self.slack_msg(msg)
             return True
+        elif response == 'Active Order':
+            msg=kwargs.get('extra', None)
+            self.slack_msg(msg)
+            return True
         elif response[0]['side'] == 'Buy':
             msg = 'Buy Signal From Bitmex'
             self.slack_msg(msg)
@@ -64,10 +68,7 @@ class Trader():
             msg = 'Sell Signal From Bitmex'
             self.slack_msg(msg)
             return True
-        elif response == 'Active Order':
-            msg=kwargs.get('extra', None) 
-            self.slack_msg(msg)
-            return True
+
 
     def slack_msg(self, msg):
         try:
