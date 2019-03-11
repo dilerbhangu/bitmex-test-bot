@@ -1,3 +1,5 @@
+import time
+
 
 class Trader():
     def __init__(self, client, sc, strategy, ohlcv_candles, money_to_trade=100, leverage=5):
@@ -12,23 +14,26 @@ class Trader():
         predict, self.ohlcv_candles = self.strategy.predict()
         print('Predication: {}'.format(predict))
         limit_price = self.ohlcv_candles['close'][-2]
-        try:
-            if predict == -1:
-                response = self.client.Order.Order_new(
-                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, price=limit_price+1).result()
-                return response
-            elif predict == 1:
-                response = self.client.Order.Order_new(
-                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, price=limit_price-1).result()
-                return response
+        response = None
+        while True:
+            try:
+                if predict == -1:
+                    response = self.client.Order.Order_new(
+                        symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, price=limit_price+1).result()
+                elif predict == 1:
+                    response = self.client.Order.Order_new(
+                        symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, price=limit_price-1).result()
+                else:
+                    response = None
+
+            except Exception as e:
+                print('something goes wrong')
+                print(e)
+                time.sleep(2)
             else:
-                response = None
-                return response
+                break
 
-        except Exception as e:
-            print('something goes wrong')
-
-        return
+        return response
 
     def set_stop_limit(self, exec_price, response):
         if response[0]['side'] == 'Buy':
