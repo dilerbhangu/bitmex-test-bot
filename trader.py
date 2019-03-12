@@ -15,20 +15,20 @@ class Trader():
         print('Predication: {}'.format(predict))
         limit_price = self.ohlcv_candles['close'][-2]
         response = None
-            try:
-                if predict == -1:
-                    response = self.client.Order.Order_new(
-                        symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, price=limit_price+1).result()
-                elif predict == 1:
-                    response = self.client.Order.Order_new(
-                        symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, price=limit_price-1).result()
-                else:
-                    response = None
+        try:
+            if predict == -1:
+                response = self.client.Order.Order_new(
+                    symbol="XBTUSD", side="Sell", orderQty=self.money_to_trade * self.leverage, price=limit_price+1).result()
+            elif predict == 1:
+                response = self.client.Order.Order_new(
+                    symbol="XBTUSD", side="Buy", orderQty=self.money_to_trade * self.leverage, price=limit_price-1).result()
+            else:
+                response = None
 
-            except Exception as e:
-                print('something goes wrong')
-                print(e)
-                time.sleep(2)
+        except Exception as e:
+            print('something goes wrong')
+            print(e)
+            time.sleep(2)
 
         return response
 
