@@ -15,7 +15,6 @@ class Trader():
         print('Predication: {}'.format(predict))
         limit_price = self.ohlcv_candles['close'][-2]
         response = None
-        while True:
             try:
                 if predict == -1:
                     response = self.client.Order.Order_new(
@@ -30,8 +29,6 @@ class Trader():
                 print('something goes wrong')
                 print(e)
                 time.sleep(2)
-            else:
-                break
 
         return response
 
